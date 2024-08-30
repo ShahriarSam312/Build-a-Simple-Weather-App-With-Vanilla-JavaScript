@@ -104,6 +104,37 @@ form.addEventListener('submit', e => {
 			msg.textContent = 'Please search for a valid city!'
 			msg.classList.add('visible')
 		})
+		function fetchWeatherData(city) {
+			
+			fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`)
+				.then(response => {
+					if (!response.ok) {
+						throw new Error('City not found');
+					}
+					return response.json();
+				})
+				.then(data => displayWeather(data))
+				.catch(error => showError(error));
+		}
+		
+		function showError(error) {
+			document.getElementById('weather-info').textContent = error.message;
+		}
+		function fetchWeatherData(city) {
+			
+			document.getElementById('loading-spinner').style.display = 'block';
+			fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`)
+				.then(response => {
+					document.getElementById('loading-spinner').style.display = 'none';
+					if (!response.ok) {
+						throw new Error('City not found');
+					}
+					return response.json();
+				})
+				.then(data => displayWeather(data))
+				.catch(error => showError(error));
+		}
+		
 
 	msg.textContent = ''
 
